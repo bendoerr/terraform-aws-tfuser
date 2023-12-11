@@ -20,7 +20,7 @@ variable "backend_user" {
   type = object({
     create        = bool
     name          = optional(string) # req, if create is false or invalid
-    force_destroy = optional(bool) # opt
+    force_destroy = optional(bool)   # opt
     pgp_key       = optional(string) # req if create is true or invalid
   })
 

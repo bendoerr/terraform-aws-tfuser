@@ -36,8 +36,8 @@ data "aws_iam_policy_document" "backend_dynamodb_rw" {
   count = var.backend_role.dynamodb_policy.create ? 1 : 0
 
   statement {
-    sid     = replace("${module.label_backend_dynamodb_rw[0].id}-0", "-", "")
-    effect  = "Allow"
+    sid    = replace("${module.label_backend_dynamodb_rw[0].id}-0", "-", "")
+    effect = "Allow"
     actions = [
       "dynamodb:DeleteItem",
       "dynamodb:GetItem",
@@ -49,8 +49,8 @@ data "aws_iam_policy_document" "backend_dynamodb_rw" {
   dynamic "statement" {
     for_each = var.backend_role.dynamodb_policy.kms_key != null ? ["this"] : []
     content {
-      sid     =  replace("${module.label_backend_dynamodb_rw[0].id}-1", "-", "")
-      effect  = "Allow"
+      sid    = replace("${module.label_backend_dynamodb_rw[0].id}-1", "-", "")
+      effect = "Allow"
       actions = [
         "kms:Encrypt",
         "kms:Decrypt",
@@ -79,8 +79,8 @@ data "aws_iam_policy_document" "backend_s3_rw" {
   count = var.backend_role.s3_policy.create ? 1 : 0
 
   statement {
-    sid     = replace("${module.label_backend_s3_rw[0].id}-0", "-", "")
-    effect  = "Allow"
+    sid    = replace("${module.label_backend_s3_rw[0].id}-0", "-", "")
+    effect = "Allow"
     actions = [
       "s3:ListBucket",
     ]
@@ -88,20 +88,21 @@ data "aws_iam_policy_document" "backend_s3_rw" {
   }
 
   statement {
-    sid     = replace("${module.label_backend_s3_rw[0].id}-1", "-", "")
-    effect  = "Allow"
+    sid    = replace("${module.label_backend_s3_rw[0].id}-1", "-", "")
+    effect = "Allow"
     actions = [
       "s3:GetObject",
       "s3:PutObject",
     ]
+    # tfsec:ignore:aws-iam-no-policy-wildcards
     resources = ["${var.backend_role.s3_policy.bucket_arn}:*"]
   }
 
   dynamic "statement" {
     for_each = var.backend_role.s3_policy.kms_key != null ? ["this"] : []
     content {
-      sid     = replace("${module.label_backend_s3_rw[0].id}-2", "-", "")
-      effect  = "Allow"
+      sid    = replace("${module.label_backend_s3_rw[0].id}-2", "-", "")
+      effect = "Allow"
       actions = [
         "kms:Encrypt",
         "kms:Decrypt",
@@ -125,7 +126,7 @@ data "aws_iam_policy_document" "assume_role" {
     sid     = replace("${module.label_backend[0].id}-0", "-", "")
     actions = ["sts:AssumeRole"]
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         var.backend_user.create ? aws_iam_user.backend[0].arn : data.aws_iam_user.backend[0].arn
       ]
@@ -163,4 +164,3 @@ resource "aws_iam_role_policy_attachment" "backend_s3" {
   role       = aws_iam_role.backend[0].id
   policy_arn = var.backend_role.s3_policy.create ? aws_iam_policy.backend_s3_rw[0].arn : var.backend_role.s3_policy.policy_arn
 }
-
