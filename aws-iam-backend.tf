@@ -119,7 +119,7 @@ resource "aws_iam_policy" "backend_s3_rw" {
   policy = data.aws_iam_policy_document.backend_s3_rw[0].json
 }
 
-data "aws_iam_policy_document" "assume_role" {
+data "aws_iam_policy_document" "backend_assume_role" {
   count = var.backend_role.create ? 1 : 0
 
   statement {
@@ -150,17 +150,20 @@ resource "aws_iam_role" "backend" {
   count              = var.backend_role.create ? 1 : 0
   name               = module.label_backend[0].id
   tags               = module.label_backend[0].tags
-  assume_role_policy = data.aws_iam_policy_document.assume_role[0].json
+  assume_role_policy = data.aws_iam_policy_document.backend_assume_role[0].json
+}
+
+data "aws_iam_role" "backend" {
+  count = var.backend_role.create ? 0 : 1
+  name  = var.backend_role.arn
 }
 
 resource "aws_iam_role_policy_attachment" "backend_dynamodb" {
-  count      = var.backend_role.create ? 1 : 0
-  role       = aws_iam_role.backend[0].id
+  role       = var.backend_role.create ? aws_iam_role.backend[0].id : data.aws_iam_role.backend[0].id
   policy_arn = var.backend_role.dynamodb_policy.create ? aws_iam_policy.backend_dynamodb_rw[0].arn : var.backend_role.dynamodb_policy.policy_arn
 }
 
 resource "aws_iam_role_policy_attachment" "backend_s3" {
-  count      = var.backend_role.create ? 1 : 0
-  role       = aws_iam_role.backend[0].id
+  role       = var.backend_role.create ? aws_iam_role.backend[0].id : data.aws_iam_role.backend[0].id
   policy_arn = var.backend_role.s3_policy.create ? aws_iam_policy.backend_s3_rw[0].arn : var.backend_role.s3_policy.policy_arn
 }

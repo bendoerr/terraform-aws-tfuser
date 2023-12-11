@@ -4,5 +4,3 @@ scan:
     - ./.infracost
     - ./examples/simple/.terraform
     - ./examples/simple/.infracost
-    - ./examples/with-backend-role/.terraform
-    - ./examples/with-backend-role/.infracost
