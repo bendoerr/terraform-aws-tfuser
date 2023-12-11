@@ -31,7 +31,7 @@ variable "backend_user" {
 variable "backend_role" {
   type = object({
     create = bool
-    arn    = optional(string) # req, if create is false
+    arn    = optional(string) # opt, if create is false
 
     extra_principals = optional(list(object({
       type        = string
@@ -55,4 +55,41 @@ variable "backend_role" {
   })
 
   # TODO Validation
+}
+
+variable "apply_user" {
+  type = object({
+    create        = bool
+    name          = optional(string) # req, if create is false or invalid
+    force_destroy = optional(bool)   # opt
+    pgp_key       = optional(string) # req if create is true or invalid
+  })
+}
+
+variable "apply_role" {
+  type = object({
+    create = bool
+    arn    = optional(string) # req, if create is false
+
+    extra_principals = optional(list(object({
+      type        = string
+      identifiers = list(string)
+    })))
+
+    budgets        = optional(bool, false)
+    dynamodb       = optional(bool, false)
+    ec2_account    = optional(bool, false)
+    ec2_networking = optional(bool, false)
+    ec2_tags       = optional(bool, false)
+    ecs            = optional(bool, false)
+    efs            = optional(bool, false)
+    iam            = optional(bool, false)
+    kms            = optional(bool, false)
+    lambda         = optional(bool, false)
+    logs           = optional(bool, false)
+    route53        = optional(bool, false)
+    s3             = optional(bool, false)
+    sns            = optional(bool, false)
+    ssm_params     = optional(bool, false)
+  })
 }

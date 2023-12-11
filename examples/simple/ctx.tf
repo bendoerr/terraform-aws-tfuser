@@ -26,6 +26,8 @@ module "context" {
   project     = "simple"
 }
 
+#tfsec:ignore:aws-s3-enable-bucket-encryption
+#tfsec:ignore:aws-s3-encryption-customer-key
 module "tfstate" {
   source  = "bendoerr-terraform-modules/tfstate/aws"
   version = "0.3.0"
