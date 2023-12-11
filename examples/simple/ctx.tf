@@ -25,3 +25,9 @@ module "context" {
   region      = "us-east-1"
   project     = "simple"
 }
+
+module "tfstate" {
+  source  = "bendoerr-terraform-modules/tfstate/aws"
+  version = "0.3.0"
+  context = module.context.shared
+}

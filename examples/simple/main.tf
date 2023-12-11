@@ -11,11 +11,11 @@ module "tfuser" {
     create = true
     dynamodb_policy = {
       create    = true
-      table_arn = "example:table:arn"
+      table_arn = module.tfstate.lock_table_arn
     }
     s3_policy = {
       create     = true
-      bucket_arn = "example:bucket:arn"
+      bucket_arn = module.tfstate.bucket_arn
     }
   }
 }
