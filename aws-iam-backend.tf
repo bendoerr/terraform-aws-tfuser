@@ -95,7 +95,7 @@ data "aws_iam_policy_document" "backend_s3_rw" {
       "s3:PutObject",
     ]
     # tfsec:ignore:aws-iam-no-policy-wildcards
-    resources = ["${var.backend_role.s3_policy.bucket_arn}:*"]
+    resources = ["${var.backend_role.s3_policy.bucket_arn}/*"]
   }
 
   dynamic "statement" {
