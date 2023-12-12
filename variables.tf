@@ -23,6 +23,10 @@ variable "backend_user" {
     force_destroy = optional(bool)   # opt
     pgp_key       = optional(string) # req if create is true or invalid
   })
+  default = {
+    create = false
+  }
+  nullable = false
 
   # TODO Validation
 
@@ -33,26 +37,37 @@ variable "backend_role" {
     create = bool
     arn    = optional(string) # opt, if create is false
 
-    extra_principals = optional(list(object({
-      type        = string
-      identifiers = list(string)
+    extra_assume_statements = optional(list(object({
+      actions = list(string)
+      principals = object({
+        type        = string
+        identifiers = list(string)
+      })
+      conditions = optional(list(object({
+        test     = string
+        variable = string
+        values   = list(string)
+      })))
     })))
 
-    dynamodb_policy = object({
+    dynamodb_policy = optional(object({
       create     = bool
       policy_arn = optional(string) # req, if create is false or invalid
       table_arn  = optional(string) # req, if create is true or invalid
       kms_key    = optional(string) # opt, if create is true or invalid
-    })
+    }), { create = false })
 
-    s3_policy = object({
+    s3_policy = optional(object({
       create     = bool
       policy_arn = optional(string) # req, if create is false or invalid
       bucket_arn = optional(string) # req, if create is true or invalid
       kms_key    = optional(string) # opt, if create is true or invalid
-    })
-
+    }), { create = false })
   })
+  default = {
+    create = false
+  }
+  nullable = false
 
   # TODO Validation
 }
@@ -71,9 +86,17 @@ variable "apply_role" {
     create = bool
     arn    = optional(string) # req, if create is false
 
-    extra_principals = optional(list(object({
-      type        = string
-      identifiers = list(string)
+    extra_assume_statements = optional(list(object({
+      actions = list(string)
+      principals = object({
+        type        = string
+        identifiers = list(string)
+      })
+      conditions = optional(list(object({
+        test     = string
+        variable = string
+        values   = list(string)
+      })))
     })))
 
     budgets        = optional(bool, false)

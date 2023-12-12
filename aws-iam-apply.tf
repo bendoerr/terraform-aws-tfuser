@@ -38,13 +38,21 @@ data "aws_iam_policy_document" "apply_assume_role" {
   }
 
   dynamic "statement" {
-    for_each = range(length(coalesce(var.apply_role.extra_principals, [])))
+    for_each = range(length(coalesce(var.apply_role.extra_assume_statements, [])))
     content {
       sid     = replace("${module.label_apply.id}-${statement.key + 1}", "-", "")
-      actions = ["sts:AssumeRole"]
+      actions = var.apply_role.extra_assume_statements[statement.key].actions
       principals {
-        type        = var.apply_role.extra_principals[statement.key].type
-        identifiers = var.apply_role.extra_principals[statement.key].identifiers
+        type        = var.apply_role.extra_assume_statements[statement.key].principals.type
+        identifiers = var.apply_role.extra_assume_statements[statement.key].principals.identifiers
+      }
+      dynamic "condition" {
+        for_each = range(length(coalesce(var.apply_role.extra_assume_statements[statement.key].conditions, [])))
+        content {
+          test     = var.apply_role.extra_assume_statements[statement.key].conditions[condition.key].test
+          variable = var.apply_role.extra_assume_statements[statement.key].conditions[condition.key].variable
+          values   = var.apply_role.extra_assume_statements[statement.key].conditions[condition.key].values
+        }
       }
     }
   }

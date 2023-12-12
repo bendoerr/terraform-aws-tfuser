@@ -4,3 +4,5 @@ scan:
     - ./.infracost
     - ./examples/simple/.terraform
     - ./examples/simple/.infracost
+    - ./examples/only_apply/.terraform
+    - ./examples/only_apply/.infracost
