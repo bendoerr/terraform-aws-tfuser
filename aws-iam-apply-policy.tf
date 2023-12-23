@@ -40,6 +40,15 @@ data "aws_iam_policy_document" "apply_1" {
       effect = "Allow"
       actions = [
         "ec2:DescribeAccountAttributes",
+        "ec2:DisableEbsEncryptionByDefault",
+        "ec2:DisableSerialConsoleAccess",
+        "ec2:EnableEbsEncryptionByDefault",
+        "ec2:EnableSerialConsoleAccess",
+        "ec2:GetEbsDefaultKmsKeyId",
+        "ec2:GetEbsEncryptionByDefault",
+        "ec2:GetSerialConsoleAccessStatus",
+        "ec2:ModifyEbsDefaultKmsKeyId",
+        "ec2:ResetEbsDefaultKmsKeyId",
       ]
       resources = ["*"]
     }
@@ -71,6 +80,7 @@ data "aws_iam_policy_document" "apply_1" {
         "ec2:CreateNetworkAclEntry",
         "ec2:CreateRoute",
         "ec2:CreateRouteTable",
+        "ec2:CreateSecurityGroup",
         "ec2:CreateSubnet",
         "ec2:CreateVPC",
         "ec2:CreateVpnGateway",
@@ -84,9 +94,11 @@ data "aws_iam_policy_document" "apply_1" {
         "ec2:DeleteNetworkAclEntry",
         "ec2:DeleteRoute",
         "ec2:DeleteRouteTable",
+        "ec2:DeleteSecurityGroup",
         "ec2:DeleteSubnet",
         "ec2:DeleteVPC",
         "ec2:DeleteVpnGateway",
+        "ec2:DescribeAccountAttributes",
         "ec2:DescribeAddresses",
         "ec2:DescribeCustomerGateways",
         "ec2:DescribeDhcpOptions",
@@ -95,7 +107,9 @@ data "aws_iam_policy_document" "apply_1" {
         "ec2:DescribeInternetGateways",
         "ec2:DescribeNatGateways",
         "ec2:DescribeNetworkAcls",
+        "ec2:DescribeNetworkInterfaces",
         "ec2:DescribeRouteTables",
+        "ec2:DescribeSecurityGroupRules",
         "ec2:DescribeSecurityGroups",
         "ec2:DescribeSubnets",
         "ec2:DescribeVpcAttribute",
@@ -108,6 +122,7 @@ data "aws_iam_policy_document" "apply_1" {
         "ec2:DisassociateRouteTable",
         "ec2:DisassociateVpcCidrBlock",
         "ec2:EnableVgwRoutePropagation",
+        "ec2:ModifyVpcAttribute",
         "ec2:ReleaseAddress",
         "ec2:RevokeSecurityGroupEgress",
         "ec2:RevokeSecurityGroupIngress",
@@ -143,11 +158,13 @@ data "aws_iam_policy_document" "apply_1" {
         "ecs:DescribeClusters",
         "ecs:DescribeServices",
         "ecs:DescribeTaskDefinition",
+        "ecs:ListAccountSettings",
+        "ecs:PutAccountSettingDefault",
         "ecs:RegisterTaskDefinition",
         "ecs:TagResource",
         "ecs:UntagResource",
         "ecs:UpdateCluster",
-        "ecs:UpdateService"
+        "ecs:UpdateService",
       ]
       resources = ["*"]
     }
@@ -161,14 +178,18 @@ data "aws_iam_policy_document" "apply_1" {
       actions = [
         "elasticfilesystem:CreateAccessPoint",
         "elasticfilesystem:CreateFileSystem",
+        "elasticfilesystem:CreateMountTarget",
         "elasticfilesystem:DeleteAccessPoint",
         "elasticfilesystem:DeleteFileSystem",
+        "elasticfilesystem:DeleteMountTarget",
         "elasticfilesystem:DescribeAccessPoints",
         "elasticfilesystem:DescribeFileSystems",
         "elasticfilesystem:DescribeLifecycleConfiguration",
+        "elasticfilesystem:DescribeMountTargetSecurityGroups",
         "elasticfilesystem:DescribeMountTargets",
+        "elasticfilesystem:ModifyMountTargetSecurityGroups",
         "elasticfilesystem:TagResource",
-        "elasticfilesystem:UntagResource"
+        "elasticfilesystem:UntagResource",
       ]
       resources = ["*"]
     }
@@ -186,12 +207,15 @@ data "aws_iam_policy_document" "apply_2" {
         "iam:AttachGroupPolicy",
         "iam:AttachRolePolicy",
         "iam:CreateAccessKey",
+        "iam:CreateAccountAlias",
         "iam:CreateGroup",
         "iam:CreateOpenIDConnectProvider",
         "iam:CreatePolicy",
         "iam:CreateRole",
         "iam:CreateUser",
         "iam:DeleteAccessKey",
+        "iam:DeleteAccountAlias",
+        "iam:DeleteAccountPasswordPolicy",
         "iam:DeleteGroup",
         "iam:DeleteOpenIDConnectProvider",
         "iam:DeletePolicy",
@@ -200,6 +224,7 @@ data "aws_iam_policy_document" "apply_2" {
         "iam:DeleteUser",
         "iam:DetachGroupPolicy",
         "iam:DetachRolePolicy",
+        "iam:GetAccountPasswordPolicy",
         "iam:GetGroup",
         "iam:GetOpenIDConnectProvider",
         "iam:GetPolicy",
@@ -207,6 +232,7 @@ data "aws_iam_policy_document" "apply_2" {
         "iam:GetRole",
         "iam:GetUser",
         "iam:ListAccessKeys",
+        "iam:ListAccountAliases",
         "iam:ListAttachedGroupPolicies",
         "iam:ListAttachedRolePolicies",
         "iam:ListGroupsForUser",
@@ -224,6 +250,7 @@ data "aws_iam_policy_document" "apply_2" {
         "iam:UntagOpenIDConnectProvider",
         "iam:UntagPolicy",
         "iam:UpdateAccessKey",
+        "iam:UpdateAccountPasswordPolicy",
         "iam:UpdateOpenIDConnectProviderThumbprint",
       ]
       resources = ["*"]
@@ -277,7 +304,9 @@ data "aws_iam_policy_document" "apply_2" {
       actions = [
         "logs:AssociateKmsKey",
         "logs:CreateLogGroup",
+        "logs:CreateLogStream",
         "logs:DeleteLogGroup",
+        "logs:DeleteLogStream",
         "logs:DeleteResourcePolicy",
         "logs:DeleteRetentionPolicy",
         "logs:DeleteSubscriptionFilter",
@@ -286,6 +315,7 @@ data "aws_iam_policy_document" "apply_2" {
         "logs:DescribeSubscriptionFilters",
         "logs:DisassociateKmsKey",
         "logs:ListTagsLogGroup",
+        "logs:PutLogEvents",
         "logs:PutResourcePolicy",
         "logs:PutRetentionPolicy",
         "logs:PutSubscriptionFilter",
@@ -392,14 +422,18 @@ data "aws_iam_policy_document" "apply_2" {
     content {
       effect = "Allow"
       actions = [
-        "sns:GetSubscriptionAttributes",
         "sns:CreateTopic",
         "sns:DeleteTopic",
+        "sns:GetSubscriptionAttributes",
         "sns:GetTopicAttributes",
+        "sns:ListSubscriptions",
         "sns:ListTagsForResource",
+        "sns:Publish",
         "sns:SetTopicAttributes",
+        "sns:Subscribe",
         "sns:TagResource",
-        "sns:UnTagResource",
+        "sns:Unsubscribe",
+        "sns:UntagResource",
       ]
       resources = ["*"]
     }
