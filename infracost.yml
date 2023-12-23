@@ -1,0 +1,4 @@
+version: 0.1
+projects:
+  - path: examples/only_apply
+  - path: examples/simple
