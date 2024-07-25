@@ -5,7 +5,10 @@ data "aws_iam_policy_document" "apply_1" {
     content {
       effect = "Allow"
       actions = [
+        "budgets:ListTagsForResource",
         "budgets:ModifyBudget",
+        "budgets:TagResource",
+        "budgets:UntagResource",
         "budgets:ViewBudget",
       ]
       resources = ["*"]
