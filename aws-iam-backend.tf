@@ -1,7 +1,7 @@
 module "label_backend" {
   count   = var.backend_user.create ? 1 : 0
   source  = "bendoerr-terraform-modules/label/null"
-  version = "0.4.1"
+  version = "0.4.2"
   context = var.context
   name    = "backend"
 }
@@ -27,7 +27,7 @@ data "aws_iam_user" "backend" {
 module "label_backend_dynamodb_rw" {
   count   = var.backend_role.dynamodb_policy.create ? 1 : 0
   source  = "bendoerr-terraform-modules/label/null"
-  version = "0.4.1"
+  version = "0.4.2"
   context = var.context
   name    = "backend-dynamodb-rw"
 }
@@ -70,7 +70,7 @@ resource "aws_iam_policy" "backend_dynamodb_rw" {
 module "label_backend_s3_rw" {
   count   = var.backend_role.s3_policy.create ? 1 : 0
   source  = "bendoerr-terraform-modules/label/null"
-  version = "0.4.1"
+  version = "0.4.2"
   context = var.context
   name    = "backend-s3-rw"
 }
